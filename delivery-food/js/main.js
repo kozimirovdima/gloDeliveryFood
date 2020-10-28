@@ -17,14 +17,20 @@ const btnAuth = document.querySelector('.button-auth'),
   logInForm = document.querySelector('#logInForm'),
   loginInput = document.querySelector('#login'),
   userName = document.querySelector('.user-name'),
-  buttonOut = document.querySelector('.button-out');
-
+  buttonOut = document.querySelector('.button-out'),
+  modalDialog = document.querySelector('.modal-dialog');
+// объявление переменной, которая получает значения из локальных данных
 let login = localStorage.getItem('gloDelivery');
 
 
 // Функция открытия/закрытия модального окна
 function toggleModalAuth() {
   modalAuth.classList.toggle('is-open');
+  if (modalAuth.classList.contains('is-open')) {
+    scrollOff();
+  } else {
+    scrollOn();
+  }
 }
 
 // Обхявление функций авторизации
@@ -55,7 +61,7 @@ function notAutorized() {
     event.preventDefault();
     login = loginInput.value;
     localStorage.setItem('gloDelivery', login);
-    logInForm.removeEventListener('submit', logIn); 
+    logInForm.removeEventListener('submit', logIn);
     btnAuth = removeEventListener('click', toggleModalAuth)
     closeAuth = removeEventListener('click', toggleModalAuth)
     toggleModalAuth();
@@ -63,7 +69,7 @@ function notAutorized() {
   }
   logInForm.addEventListener('submit', logIn);
 }
-
+// Функция проверки авторизации, да / нет
 function checkAuth() {
   if (login) {
     autorized();
@@ -72,3 +78,11 @@ function checkAuth() {
   }
 }
 checkAuth();
+
+//Закрытие Модального окна при клике мимо!
+modalAuth.addEventListener('click', e => {
+  console.log(e.target);
+  if (e.target === modalAuth) {
+    toggleModalAuth();
+  }
+});
